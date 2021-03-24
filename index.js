@@ -10,8 +10,8 @@ const request = async (obj) => {
   });
 };
 
-const processFile = async () => {
-  records = [];
+const readCsv = async () => {
+  results = [];
   const parser = fs
     .createReadStream('./input.csv')
     .pipe(parse({
@@ -19,13 +19,13 @@ const processFile = async () => {
       from_line: 1
     }));
   for await (const record of parser) {
-    records.push(record);
+    results.push(record);
     await request(record);
   }
-  return records;
+  return results;
 }
 
 (async () => {
-  const records = await processFile();
-  console.info('✅', records);
+  const results = await readCsv();
+  console.info('✅', results);
 })();
