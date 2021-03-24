@@ -1,22 +1,31 @@
 const fs = require('fs');
 const parse = require('csv-parse');
-const readable = fs.createReadStream('input.csv');
-const parser = parse({
-  columns: true,
-  from_line: 1
-});
 
-readable
-  .pipe(parser)
-  .on('data', (data) => {
-    console.log('pauseの前', data);
-    readable.pause();
-    console.log('pauseの後');
+const request = async (obj) => {
+  await new Promise(resolve => {
     setTimeout(() => {
-      console.log('resumeの前');
-      readable.resume();
-    }, 3000);
-  })
-  .on('end', () => {
-    console.log('end');
+      console.log('📤', obj);
+      resolve();
+    }, 1000)
   });
+};
+
+const processFile = async () => {
+  records = [];
+  const parser = fs
+    .createReadStream('./input.csv')
+    .pipe(parse({
+      columns: true,
+      from_line: 1
+    }));
+  for await (const record of parser) {
+    records.push(record);
+    await request(record);
+  }
+  return records;
+}
+
+(async () => {
+  const records = await processFile();
+  console.info('✅', records);
+})();
