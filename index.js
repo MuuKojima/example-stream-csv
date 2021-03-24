@@ -1,7 +1,6 @@
 const fs = require('fs');
 const parse = require('csv-parse');
 const readable = fs.createReadStream('input.csv');
-
 const parser = parse({
   columns: true,
   from_line: 1
