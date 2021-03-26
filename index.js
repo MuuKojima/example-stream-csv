@@ -47,8 +47,8 @@ const readCsvByAsyncIterator = async () => {
   return results;
 }
 
-// 単純なStreamだとendの呼ばれるタイミングが、dataを全部読み込んだ `瞬間` に発火するので、
-// 結果的に、最後の一個が入ってないので、扱いずらいかも。
+// 単純なStreamだとendの呼ばれるタイミングが、asyncを使う場合に限り、dataを全部読み込んだ`瞬間`に発火するので、
+// 結果的に、最後の一個が入ってないので、扱いずらいかも。わかりずらいけど、コード動かすとなるほどってなる。
 // ホントはdataイベントが発生して、dataイベント内のコードが全部実行されてから、endにいってほしい、、
 (async () => {
   const results = await readCsvBySimpleStream();
